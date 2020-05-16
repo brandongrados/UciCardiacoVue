@@ -1,15 +1,11 @@
-import Vue from 'vue';
-import Vuetify from 'vuetify/lib';
+import Vue from 'vue'
+import Vuetify from 'vuetify/lib'
+import 'vuetify/src/stylus/app.styl'
 
-Vue.use(Vuetify);
 
-export default new Vuetify({
+Vue.use(Vuetify,{
   theme: {
-      options: {
-        customProperties: true,
-      },
-    themes: {
-      light: {
+
         primary: '#03A9F4',
         secondary: '#81D4FA',
         accent: '#82B1FF',
@@ -18,11 +14,12 @@ export default new Vuetify({
         success: '#4CAF50',
         warning: '#FFC107'
       },
-    },
-  },
+    
   
   customProperties:true,
   iconfont: 'md',
   
-});
+
+})
+
 

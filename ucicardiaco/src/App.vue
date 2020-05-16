@@ -1,212 +1,196 @@
 <template>
   <v-app id="inspire">
-
-    
-    <v-app-bar
-      color="light-blue"
-      light-blue
-      app
-      :clipped-left="$vuetify.breakpoint.mdAndUp"
-      fixed
-    >
-      <v-app-bar-title style="width: 1000px" class="ml-0 pl-4">
-        <v-app-bar-side-icon @click.stop="drawer = !drawer"></v-app-bar-side-icon>
-        <v-btn icon>
-        <v-icon>reorder</v-icon>
-        </v-btn>
-        <span class="hidden-sm-and-down">Sistema UCI Cardíaco</span>
-      </v-app-bar-title>
-
-      <v-spacer></v-spacer>
-       
-      <v-btn icon>
-        <v-icon>apps</v-icon>
-      </v-btn>
-
-    </v-app-bar>
-
     <v-navigation-drawer
-      v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
-      app
+      v-model="drawer"
       fixed
-      >
-
+      app
+    >
       <v-list dense>
-
-        <template>          
-          <v-list-item :to="{ name: 'home'}">
-            <v-list-item-action>
+        <template>
+          <v-list-tile :to="{ name: 'home'}">
+            <v-list-tile-action>
               <v-icon>home</v-icon>
-            </v-list-item-action>
+            </v-list-tile-action>
+            <v-list-tile-title>
               Inicio
-            </v-list-item-title>
-          </v-list-item>          
+            </v-list-tile-title>
+          </v-list-tile>          
         </template>
-
         <template>
             <v-list-group>
-            <v-list-item slot="activator">
-              <v-list-item-content>
-                <v-list-item-title>
-                  Registro
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item :to="{ name: 'enfermedades'}">
-              <v-list-item-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
                   Enfermedades
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: 'enfermedades'}">
+              <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Síntomas
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Enfermedades
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Sintomas
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list-group>
         </template>
         <template>
             <v-list-group>
-            <v-list-item slot="activator">
-              <v-list-item-content>
-                <v-list-item-title>
-                  Hitoria
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Historia
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Usuario
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Historia
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Paciente
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Reportes
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list-group>
         </template>
         <template>
             <v-list-group>
-            <v-list-item slot="activator">
-              <v-list-item-content>
-                <v-list-item-title>
-                  Diagnóstico
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Diagnóstico
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Pacientes
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-        </template>
-        <template>
-            <v-list-group>
-            <v-list-item slot="activator">
-              <v-list-item-content>
-                <v-list-item-title>
-                  Accesos
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Roles
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
                   Usuarios
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Médico
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Secretaria
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list-group>
         </template>
         <template>
             <v-list-group>
-            <v-list-item slot="activator">
-              <v-list-item-content>
-                <v-list-item-title>
-                  Consultas
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Paciente
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  Consulta Pacientes
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-spacer></v-spacer>
-            <v-list-item :to="{ name: ''}">
-              <v-list-item-action>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Paciente
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                 Consulta Diagnóstico
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Reporte
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
+        </template>
+        <template>
+            <v-list-group>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Gráficos de diagnóstico
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Probabilidad 
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  3D
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
           </v-list-group>
         </template>
       </v-list>
-    </v-navigation-drawer>
 
+    </v-navigation-drawer>
+    <v-toolbar
+      :clipped-left="$vuetify.breakpoint.lgAndUp"
+      color="light-blue"
+      light-blue
+      app
+      fixed
+    >
+      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <span class="hidden-sm-and-down">Sistema de diagnóstico</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>apps</v-icon>
+      </v-btn>
+    </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
         <v-slide-y-transition mode="out-in">
@@ -215,23 +199,19 @@
       </v-container>
     </v-content>
 
-    <v-footer  light height="auto" width="100%" 
-    absolute >
+    <v-footer dark height="auto">
       <v-layout justify-center>
         <v-flex text-xs-center>
-          <v-card flat tile color="light-blue" class="white--text">
+          <v-card flat tile color="primary" class="white--text">
             <v-card-text class="white--text pt-0">
-              IncanatoIT &copy;2020
+              UCI Cardíaco Cleveland;2020
             </v-card-text>
           </v-card>
         </v-flex>
       </v-layout>
     </v-footer>
-
-
   </v-app>
 </template>
-
 
 <script>
 
@@ -239,23 +219,8 @@ export default {
   name: 'App',
   data () {
     return {
-      drawer: true,
-      clipped: false,
-      fixed: false,
-      items: [{
-        icon: 'table_chart',
-        icon: 'apps',
-        icon: 'reorder',
-        title: 'Inspire',
-        title:'Sistema UCI Cardiaco', icon:'reorder'
-      }],
-      miniVariant: false,
-      center: true,
-      centerDrawer: false,
-      title: 'Vuetify.js'
+      drawer: null,
     }
-    
   }
 }
 </script>
-
