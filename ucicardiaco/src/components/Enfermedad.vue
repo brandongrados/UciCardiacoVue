@@ -79,9 +79,11 @@
     </v-layout>
 </template>
 <script>
+import axios from 'axios'
     export default {
         data(){
             return {
+                enfermedad:[],
                 dialog: false,
                 headers: [
                 {
@@ -126,9 +128,20 @@
         },
 
         created () {
-            this.initialize()
+            this.initialize();
+            this.listar();
         },
         methods:{
+
+
+               listar()  {
+                  axios.get('http://localhost:58472/api/Enfermedades/Listar').them(function(response)     {
+                      console.log(response);
+                  }).catch(function(error)   {
+                    console.log(error);
+                  });
+               },
+
             initialize () {
             this.desserts = [
                 {
