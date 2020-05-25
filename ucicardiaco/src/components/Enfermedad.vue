@@ -22,13 +22,17 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
                         <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedItem.name" label="nombre"></v-text-field>
+                            <v-text-field v-model="nombre" label="nombre"></v-text-field>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedItem.descripcion" label="descripcion"></v-text-field>
+                            <v-text-field v-model="descripcion" label="descripcion"></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm6 md4 v-show="valida">
+                        <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
+                        </div>
                         </v-flex>
                         <v-flex xs12 sm6 md4>
-                            <v-text-field v-model="editedItem.condicion" label="condicion"></v-text-field>
+                            <v-text-field v-model="condicion" label="condicion"></v-text-field>
                         </v-flex>
                      
                         </v-layout>
@@ -104,18 +108,19 @@
                 carbs: 0,
                 protein: 0
                 },
-                defaultItem: {
-                name: '',
-                calories: 0,
-                fat: 0,
-                carbs: 0,
-                protein: 0
-                }
+                
+                id:'',
+                nombre:'',
+                descripcion:'',
+                condicion:'',
+                valida:0,
+                validaMensaje:[]
+
             }
         },
         computed: {
             formTitle () {
-            return this.editedIndex === -1 ? 'Enfermedad' : 'Edit Item'
+            return this.editedIndex === -1 ? 'Nueva enfermedad' : 'Actualizar enfermedad'
             }
         },
 
@@ -205,8 +210,9 @@
             },
 
             editItem (item) {
-            this.editedIndex = this.desserts.indexOf(item)
-            this.editedItem = Object.assign({}, item)
+            this.editedIndex=this.desserts.indexOf(item)
+            this.editedItem=Object.assign({},item)
+            
             this.dialog = true
             },
 
@@ -224,12 +230,38 @@
             },
 
             save () {
+                if(this.validar()){
+                    return;
+                }
             if (this.editedIndex > -1) {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem)
             } else {
                 this.desserts.push(this.editedItem)
+              
             }
-            this.close()
+            this.close();
+            },
+            validar(){
+                this.valida=0;
+                this.validaMensaje=[];
+
+                if(this.nombre.length <1 || this.nombre.length>20){
+                    this.validaMensaje.push("Ingrese un nombre por favor")
+
+                }
+                if(this.descripcion.length <1 || this.descripcion.length>20){
+                    this.validaMensaje.push("Ingrese una descripcion por favor")
+
+                }
+                if(this.condicion.length <1 || this.condicion.length>20){
+                    this.validaMensaje.push("Ingrese una condicion por favor")
+
+                }
+                if(this.validaMensaje.length){
+                    this.valida=1;
+
+                }
+                return this.valida;
             }
         }        
     }
