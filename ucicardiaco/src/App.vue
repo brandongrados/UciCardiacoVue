@@ -22,7 +22,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Enfermedades
+                  Almacén
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -42,7 +42,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Sintomas
+                  Aticulos
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -53,7 +53,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Historia
+                  Compras
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -63,7 +63,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Historia
+                  Ingresos
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -73,7 +73,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Reportes
+                  Proveedores
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -82,32 +82,63 @@
         <template>
             <v-list-group>
             <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Ventas
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Ventas
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Clientes
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list-group>
+        </template>
+        <template>
+            <v-list-group>
+            <v-list-tile slot="activator">
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Accesos
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>
+                  Roles
+                </v-list-tile-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-list-tile :to="{ name: ''}">
+              <v-list-tile-action>
+                <v-icon>table_chart</v-icon>
+              </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
                   Usuarios
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Médico
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Secretaria
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
           </v-list-group>
         </template>
         <template>
@@ -115,7 +146,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Paciente
+                  Consultas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -125,7 +156,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Paciente
+                  Consulta Compras
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -135,38 +166,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Reporte
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list-group>
-        </template>
-        <template>
-            <v-list-group>
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Gráficos de diagnóstico
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  Probabilidad 
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
-              <v-list-tile-action>
-                <v-icon>table_chart</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  3D
+                  Consulta Ventas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -178,13 +178,13 @@
     <v-toolbar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
       color="light-blue"
-      light-blue
+      dark
       app
       fixed
     >
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Sistema de diagnóstico</span>
+        <span class="hidden-sm-and-down">KODIA</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon>
@@ -202,9 +202,9 @@
     <v-footer dark height="auto">
       <v-layout justify-center>
         <v-flex text-xs-center>
-          <v-card flat tile color="primary" class="white--text">
+          <v-card flat tile color="secondary" class="white--text">
             <v-card-text class="white--text pt-0">
-              UCI Cardíaco Cleveland;2020
+              Kodia &copy;2020
             </v-card-text>
           </v-card>
         </v-flex>
