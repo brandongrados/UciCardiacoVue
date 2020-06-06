@@ -12,34 +12,59 @@
                     <v-text-field class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
                     <v-spacer></v-spacer>
                     <v-dialog v-model="dialog" max-width="500px">
-                    <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo</v-btn>
+                        <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo</v-btn>
+                            <v-card>
+                                <v-card-title>
+                                <span class="headline">{{ formTitle }}</span>
+                                </v-card-title>
+                    
+                                <v-card-text>
+                                <v-container grid-list-md>
+                                    <v-layout wrap>
+                                    <v-flex xs12 sm12 md12>
+                                        <v-text-field v-model="nombre" label="Nombre"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm12 md12>
+                                        <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm12 md12 v-show="valida">
+                                        <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
+                                        </div>
+                                    </v-flex>
+                                
+                                    </v-layout>
+                                </v-container>
+                                </v-card-text>
+                    
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="blue darken-1" flat @click.native="close">Cancelar</v-btn>
+                                    <v-btn color="blue darken-1" flat @click.native="guardar">Guardar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                    </v-dialog>
+                    <v-dialog v-model="adModal" max-width="290">
                         <v-card>
-                            <v-card-title>
-                            <span class="headline">{{ formTitle }}</span>
-                            </v-card-title>
-                
+                            <v-card-title class="headline" v-if="adAccion==1">¿Activar Item?</v-card-title>
+                            <v-card-title class="headline" v-if="adAccion==2">¿Desactivar Item?</v-card-title>
                             <v-card-text>
-                            <v-container grid-list-md>
-                                <v-layout wrap>
-                                <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="nombre" label="Nombre"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12>
-                                    <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm12 md12 v-show="valida">
-                                    <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
-                                    </div>
-                                </v-flex>
-                            
-                                </v-layout>
-                            </v-container>
+                                Estas a  punto de 
+                                <span v-if="adAccion==1">Activar</span>
+                                <span v-if="adAccion==2">Desactivar</span>
+                                el ítem  {{adNombre}}
                             </v-card-text>
-                
+                        
                             <v-card-actions>
                                 <v-spacer></v-spacer>
-                                <v-btn color="blue darken-1" flat @click.native="close">Cancelar</v-btn>
-                                <v-btn color="blue darken-1" flat @click.native="guardar">Guardar</v-btn>
+                                <v-btn color="green darken-1" flat="flat" @click="activarDesactivarCerrar">
+                                    Cancelar
+                                </v-btn>
+                                <v-btn v-if="adAccion==1" color="orange darken-4" flat="flat" @click="activar">
+                                    Activar
+                                </v-btn>
+                                <v-btn v-if="adAccion==2" color="orange darken-4" flat="flat" @click="desactivar">
+                                    Desactivar
+                                </v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-dialog>
@@ -59,12 +84,22 @@
                         >
                         edit
                         </v-icon>
-                        <v-icon
-                        small
-                        @click="deleteItem(props.item)"
-                        >
-                        delete
-                        </v-icon>
+                        <template v-if="props.item.condicion">
+                            <v-icon
+                            small
+                            @click="activarDesactivarMostrar(2,props.item)"
+                            >
+                            block
+                            </v-icon>
+                        </template>
+                        <template v-else>
+                            <v-icon
+                            small
+                            @click="activarDesactivarMostrar(1,props.item)"
+                            >
+                            check
+                            </v-icon>
+                        </template>
                     </td>
                     <td>{{ props.item.nombre }}</td>
                     <td>{{ props.item.descripcion }}</td>
@@ -80,7 +115,7 @@
                
                 </template>
                 <template slot="no-data">
-                <v-btn color="primary" @click="initialize">Resetear</v-btn>
+                <v-btn color="primary" @click="listar">Resetear</v-btn>
                 </template>
             </v-data-table>
         </v-flex>
@@ -108,7 +143,11 @@
                 nombre:'',
                 descripcion:'',
                 valida: 0,
-                validaMensaje:[]
+                validaMensaje:[],
+                adModal:0,
+                adAccion:0,
+                adNombre:'',
+                adId:''
               
             }
         },
@@ -215,6 +254,49 @@
                     this.valida=1;
                 }
                 return this.valida;
+            },
+            activarDesactivarMostrar(accion,item)  {
+                this.adModal=1;
+                this.adNombre=item.nombre;
+                this.adId=item.idenfermedad;
+
+                if(accion==1)   {
+                    this.adAccion=1;
+                }else if(accion==2) {
+                    this.adAccion=2;
+                }
+                else{
+                    this.adAccion=0;
+                }
+            },
+            activarDesactivarCerrar()   {
+                this.adModal=0;
+            },
+            activar()   {
+                let me=this;
+                axios.put('api/Enfermedades/Activar/'+this.adId,{}).then(function(response)  {
+                    me.adModal=0;
+                    me.adAccion=0;
+                    me.adNombre='';
+                    me.adId='';
+                    me.listar();
+                }).catch(function(error)   {
+                    console.log(error)
+                });
+
+            },
+            desactivar()    {
+                let me=this;
+                axios.put('api/Enfermedades/Desactivar/'+this.adId,{}).then(function(response)  {
+                    me.adModal=0;
+                    me.adAccion=0;
+                    me.adNombre='';
+                    me.adId='';
+                    me.listar();
+                }).catch(function(error)   {
+                    console.log(error)
+                });
+
             }
         }        
     }
