@@ -103,13 +103,7 @@
                 ],
                 search: '',
                 editedIndex: -1,
-                editedItem: {
-                    name: '',
-                    calories: 0,
-                    fat: 0,
-                    carbs: 0,
-                    protein: 0
-                },
+                
                 id:'',
                 nombre:'',
                 descripcion:'',
@@ -146,8 +140,10 @@
             },
 
             editItem (item) {
-                this.editedIndex = this.desserts.indexOf(item)
-                this.editedItem = Object.assign({}, item)
+                this.id=item.idenfermedad;
+                this.nombre=item.nombre;
+                this.descripcion=item.descripcion;
+                this.editedIndex=1;
                 this.dialog = true
             },
 
@@ -158,12 +154,14 @@
 
             close () {
                 this.dialog = false;
+                this.limpiar();
             },
 
             limpiar()   {
                 this.id="";
                 this.nombre="";
                 this.descripcion="";
+                this.editedIndex=-1;
             },
 
             guardar () {
@@ -172,6 +170,20 @@
                 }
                 if (this.editedIndex > -1) {
                     //Código para editar
+                    let me=this;
+                    axios.put('api/Enfermedades/Actualizar',{
+                        'idenfermedad':me.id,
+                        'nombre':me.nombre,
+                        'descripcion':me.descripcion
+
+                    }).then(function(response)  {
+                        me.close();
+                        me.listar();
+                        me.limpiar();
+                    }).catch(function(error)   {
+                        console.log(error)
+                    });
+
                 } else {
                     //Código para guardar
                     let me=this;
