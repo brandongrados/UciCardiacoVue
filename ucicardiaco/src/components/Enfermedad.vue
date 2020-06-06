@@ -27,6 +27,10 @@
                                 <v-flex xs12 sm12 md12>
                                     <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
                                 </v-flex>
+                                <v-flex xs12 sm12 md12 v-show="valida">
+                                    <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
+                                    </div>
+                                </v-flex>
                             
                                 </v-layout>
                             </v-container>
@@ -108,7 +112,9 @@
                 },
                 id:'',
                 nombre:'',
-                descripcion:''
+                descripcion:'',
+                valida: 0,
+                validaMensaje:[]
               
             }
         },
@@ -161,6 +167,9 @@
             },
 
             guardar () {
+                if(this.validar())    {
+                    return;
+                }
                 if (this.editedIndex > -1) {
                     //Código para editar
                 } else {
@@ -177,9 +186,23 @@
                     }).catch(function(error)   {
                         console.log(error)
                     });
-s
+
                 }
                 
+            },
+
+            validar()   {
+                this.valida=0;
+                this.validaMensaje=[];
+
+                if(this.nombre.length<3 || this.nombre.length>50)    {
+                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres");
+
+                }
+                if(this.validaMensaje.length)   {
+                    this.valida=1;
+                }
+                return this.valida;
             }
         }        
     }
