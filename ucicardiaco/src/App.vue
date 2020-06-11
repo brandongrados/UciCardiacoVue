@@ -22,7 +22,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Almacén
+                  Enfermedades
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -32,17 +32,17 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Enfermedades
+                  Enfermedad
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'sintomas'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Aticulos
+                  Síntomas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -53,7 +53,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Compras
+                  Historia
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -63,7 +63,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Ingresos
+                  Historias
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -73,7 +73,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Proveedores
+                  Pacientes
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -84,7 +84,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Ventas
+                  Diagnóstico
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -94,7 +94,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Ventas
+                  Diagnósticos
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -104,7 +104,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Clientes
+                  Médicos
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -125,7 +125,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Roles
+                  Secretaria
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -135,7 +135,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Usuarios
+                  Personas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -146,7 +146,7 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Consultas
+                  Consulta
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -156,7 +156,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Consulta Compras
+                  Reportes Individuales
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -166,7 +166,7 @@
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Consulta Ventas
+                  Reportes Generales
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>

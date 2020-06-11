@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
 import Enfermedad from './components/Enfermedad.vue'
+import Sintoma from './components/Sintoma.vue'
+
 
 Vue.use(Router)
 
@@ -14,10 +16,18 @@ export default new Router({
       name: 'home',
       component: Home
     },
+
+
     {
       path: '/enfermedades',
       name: 'enfermedades',
       component: Enfermedad
+    },
+
+    {
+      path: '/sintomas',
+      name: 'sintomas',
+      component: Sintoma
     }
   ]
 })
