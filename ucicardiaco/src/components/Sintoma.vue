@@ -21,8 +21,20 @@
                                 <v-card-text>
                                 <v-container grid-list-md>
                                     <v-layout wrap>
+                                    <v-flex xs6 sm6 md6>
+                                        <v-text-field v-model="codigo" label="Código">
+                                        </v-text-field>
+                                    </v-flex>   
+                                    <v-flex xs6 sm6 md6>
+                                        <v-select v-model="idenfermedad"
+                                        :items="enfermedades" label="Enfermedad">
+                                        </v-select>    
+                                    </v-flex>   
                                     <v-flex xs12 sm12 md12>
                                         <v-text-field v-model="nombre" label="Nombre"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs6 sm6 md6>
+                                        <v-text-field type="number" v-model="valor" label="Valor"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm12 md12>
                                         <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
@@ -137,16 +149,20 @@
                     { text: 'Código', value: 'codigo', sortable: false }, 
                     { text: 'Nombre', value: 'nombre' },
                     { text: 'Enfermedad', value: 'enfermedad' },
-                    { text: 'Valor', value: 'valor' },
+                    { text: 'Valor', value: 'valor',sortable:false },
                     { text: 'Descripcion', value: 'descripcion', sortable: false },
                     { text: 'Estado', value: 'condicion', sortable: false },
                 
                 ],
                 search: '',
                 editedIndex: -1,
-                
                 id:'',
+                idenfermedad:'',
+                enfermedades:[  
+                ],
+                codigo:'',
                 nombre:'',
+                valor:0,
                 descripcion:'',
                 valida: 0,
                 validaMensaje:[],
@@ -159,7 +175,7 @@
         },
         computed: {
             formTitle () {
-            return this.editedIndex === -1 ? 'Nueva Enfermedad' : 'Actualizar enfermedad'
+            return this.editedIndex === -1 ? 'Nuevo Síntoma' : 'Actualizar síntoma'
             }
         },
 
@@ -171,10 +187,12 @@
 
         created () {
             this.listar();
+            this.select();
+            
         },
         methods:{
 
-            listar ()   {
+            listar()   {
                 let me=this;
                  axios.get('api/Sintomas/Listar').then(function(response)  {
                        //console.log(response);
@@ -183,20 +201,31 @@
                        console.log(error);
                  });
             },
+            select()   {
+                let me=this;
+                var enfermedadesArray=[];
+                 axios.get('api/Enfermedades/Select').then(function(response)  {
+                       enfermedadesArray=response.data;
+                       enfermedadesArray.map(function(x)    {
+                           me.enfermedades.push({text:x.nombre,value:x.idenfermedad});
+                       });
+                 }).catch(function(error)   {
+                       console.log(error);
+                 });
+            },
 
             editItem (item) {
-                this.id=item.idenfermedad;
+                this.id=item.idsintoma;
+                this.idenfermedad=item.idenfermedad;
+                this.codigo=item.codigo;
                 this.nombre=item.nombre;
+                this.valor=item.valor;
                 this.descripcion=item.descripcion;
                 this.editedIndex=1;
                 this.dialog = true
             },
 
-            deleteItem (item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-            },
-
+         
             close () {
                 this.dialog = false;
                 this.limpiar();
@@ -204,7 +233,10 @@
 
             limpiar()   {
                 this.id="";
+                this.idenfermedad="";
+                this.codigo="";
                 this.nombre="";
+                this.valor="";
                 this.descripcion="";
                 this.editedIndex=-1;
             },
@@ -216,9 +248,12 @@
                 if (this.editedIndex > -1) {
                     //Código para editar
                     let me=this;
-                    axios.put('api/Enfermedades/Actualizar',{
-                        'idenfermedad':me.id,
+                    axios.put('api/Sintomas/Actualizar',{
+                        'idsintoma':me.id,
+                        'idenfermedad':me.idenfermedad,
+                        'codigo':me.codigo,
                         'nombre':me.nombre,
+                        'valor':me.valor,
                         'descripcion':me.descripcion
 
                     }).then(function(response)  {
@@ -232,8 +267,12 @@
                 } else {
                     //Código para guardar
                     let me=this;
-                    axios.post('api/Enfermedades/Crear',{
+                    axios.post('api/Sintomas/Crear',{
+                        
+                        'idenfermedad':me.idenfermedad,
+                        'codigo':me.codigo,
                         'nombre':me.nombre,
+                        'valor':me.valor,
                         'descripcion':me.descripcion
 
                     }).then(function(response)  {
@@ -253,8 +292,15 @@
                 this.validaMensaje=[];
 
                 if(this.nombre.length<3 || this.nombre.length>50)    {
-                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres");
+                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres.");
 
+                }
+               
+                if(!this.idenfermedad){
+                    this.validaMensaje.push("Selecciona una enfermedad.");
+                }
+                if(!this.valor || this.valor==0){
+                    this.validaMensaje.push("Ingrese el valor del síntoma.");
                 }
                 if(this.validaMensaje.length)   {
                     this.valida=1;
@@ -264,7 +310,7 @@
             activarDesactivarMostrar(accion,item)  {
                 this.adModal=1;
                 this.adNombre=item.nombre;
-                this.adId=item.idenfermedad;
+                this.adId=item.idsintoma;
 
                 if(accion==1)   {
                     this.adAccion=1;
@@ -280,7 +326,7 @@
             },
             activar()   {
                 let me=this;
-                axios.put('api/Enfermedades/Activar/'+this.adId,{}).then(function(response)  {
+                axios.put('api/Sintomas/Activar/'+this.adId,{}).then(function(response)  {
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre='';
@@ -293,7 +339,7 @@
             },
             desactivar()    {
                 let me=this;
-                axios.put('api/Enfermedades/Desactivar/'+this.adId,{}).then(function(response)  {
+                axios.put('api/Sintomas/Desactivar/'+this.adId,{}).then(function(response)  {
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre='';
