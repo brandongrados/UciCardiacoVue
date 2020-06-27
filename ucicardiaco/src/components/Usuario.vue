@@ -2,7 +2,7 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Sintomas</v-toolbar-title>
+                <v-toolbar-title>Usuarios</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -21,23 +21,34 @@
                                 <v-card-text>
                                 <v-container grid-list-md>
                                     <v-layout wrap>
-                                    <v-flex xs6 sm6 md6>
-                                        <v-text-field v-model="codigo" label="Código">
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="nombre" label="Nombre">
                                         </v-text-field>
                                     </v-flex>   
-                                    <v-flex xs6 sm6 md6>
-                                        <v-select v-model="idenfermedad"
-                                        :items="enfermedades" label="Enfermedad">
+                                    <v-flex xs12 sm6 md6>
+                                        <v-select v-model="idrol"
+                                        :items="roles" label="Rol">
                                         </v-select>    
                                     </v-flex>   
-                                    <v-flex xs12 sm12 md12>
-                                        <v-text-field v-model="nombre" label="Nombre"></v-text-field>
+                                    <v-flex xs12 sm6 md6>
+                                         <v-select v-model="tipo_documento"
+                                        :items="documentos" label="Tipo Documento">
+                                        </v-select> 
                                     </v-flex>
-                                    <v-flex xs6 sm6 md6>
-                                        <v-text-field type="number" v-model="valor" label="Valor"></v-text-field>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="num_documento" label="Número Documento"></v-text-field>
                                     </v-flex>
-                                    <v-flex xs12 sm12 md12>
-                                        <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="direccion" label="Direccion"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="telefono" label="Telefono"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="email" label="Email"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field type="password" v-model="password" label="Password"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm12 md12 v-show="valida">
                                         <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
@@ -83,7 +94,7 @@
                 </v-toolbar>
             <v-data-table
                 :headers="headers"
-                :items="sintomas"
+                :items="usuarios"
                 :search="search"
                 class="elevation-1"
             >
@@ -113,11 +124,13 @@
                             </v-icon>
                         </template>
                     </td>
-                    <td>{{ props.item.codigo }}</td>
                     <td>{{ props.item.nombre }}</td>
-                    <td>{{ props.item.enfermedad }}</td>
-                    <td>{{ props.item.valor }}</td>
-                    <td>{{ props.item.descripcion }}</td>
+                    <td>{{ props.item.rol }}</td>
+                    <td>{{ props.item.tipo_documento }}</td>
+                    <td>{{ props.item.num_documento }}</td>
+                    <td>{{ props.item.direccion }}</td>
+                    <td>{{ props.item.telefono }}</td>
+                    <td>{{ props.item.email }}</td>
                     <td>
                         <div v-if="props.item.condicion">
                             <span class="blue--text">Activo</span>
@@ -141,29 +154,37 @@
     export default {
         data(){
             return {
-                sintomas: [],
+                usuarios: [],
                 dialog: false,
                 headers: [
                 
                     { text: 'Opciones', value: 'opciones', sortable: false }, 
-                    { text: 'Código', value: 'codigo', sortable: false }, 
                     { text: 'Nombre', value: 'nombre' },
-                    { text: 'Enfermedad', value: 'enfermedad' },
-                    { text: 'Valor', value: 'valor',sortable:false },
-                    { text: 'Descripcion', value: 'descripcion', sortable: false },
+                    { text: 'Rol', value: 'rol' },
+                    { text: 'Tipo Documento', value: 'tipo_documento'},
+                    { text: 'Número Documento', value: 'num_documento', sortable: false },
+                    { text: 'Dirección', value: 'direccion', sortable: false },
+                    { text: 'Teléfono', value: 'telefono', sortable: false },
+                    { text: 'Email', value: 'email', sortable: false },
                     { text: 'Estado', value: 'condicion', sortable: false },
                 
                 ],
                 search: '',
                 editedIndex: -1,
                 id:'',
-                idenfermedad:'',
-                enfermedades:[  
+                idrol:'',
+                roles:[  
                 ],
-                codigo:'',
                 nombre:'',
-                valor:0,
-                descripcion:'',
+                tipo_documento:'',
+                documentos: ['DNI','RUC','PASAPORTE','CEDULA'],
+                num_documento:'',
+                direccion:'',
+                telefono:'',
+                email:'',
+                password:'',
+                actPassword:false,
+                passwordAnt:'',
                 valida: 0,
                 validaMensaje:[],
                 adModal:0,
@@ -175,7 +196,7 @@
         },
         computed: {
             formTitle () {
-            return this.editedIndex === -1 ? 'Nuevo Síntoma' : 'Actualizar síntoma'
+            return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Actualizar usuario'
             }
         },
 
@@ -196,9 +217,9 @@
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                 axios.get('api/Sintomas/Listar',configuracion).then(function(response)  {
+                 axios.get('api/Usuarios/Listar',configuracion).then(function(response)  {
                        //console.log(response);
-                       me.sintomas=response.data;
+                       me.usuarios=response.data;
                  }).catch(function(error)   {
                        console.log(error);
                  });
@@ -207,11 +228,11 @@
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                var enfermedadesArray=[];
-                 axios.get('api/Enfermedades/Select',configuracion).then(function(response)  {
-                       enfermedadesArray=response.data;
-                       enfermedadesArray.map(function(x)    {
-                           me.enfermedades.push({text:x.nombre,value:x.idenfermedad});
+                var rolesArray=[];
+                 axios.get('api/Roles/Select',configuracion).then(function(response)  {
+                       rolesArray=response.data;
+                       rolesArray.map(function(x)    {
+                           me.roles.push({text:x.nombre,value:x.idrol});
                        });
                  }).catch(function(error)   {
                        console.log(error);
@@ -219,12 +240,16 @@
             },
 
             editItem (item) {
-                this.id=item.idsintoma;
-                this.idenfermedad=item.idenfermedad;
-                this.codigo=item.codigo;
+                this.id=item.idusuario;
+                this.idrol=item.idrol;
                 this.nombre=item.nombre;
-                this.valor=item.valor;
-                this.descripcion=item.descripcion;
+                this.tipo_documento=item.tipo_documento;
+                this.num_documento=item.num_documento;
+                this.direccion=item.direccion;
+                this.telefono=item.telefono;
+                this.email=item.email;
+                this.password=item.password_hash;
+                this.passwordAnt=item.password_hash;
                 this.editedIndex=1;
                 this.dialog = true
             },
@@ -237,11 +262,16 @@
 
             limpiar()   {
                 this.id="";
-                this.idenfermedad="";
-                this.codigo="";
+                this.idrol="";
                 this.nombre="";
-                this.valor="";
-                this.descripcion="";
+                this.tipo_documento="";
+                this.num_documento="";
+                this.direccion="";
+                this.telefono="";
+                this.email="";
+                this.password="";
+                this.passwordAnt="";
+                this.actPassword=false;
                 this.editedIndex=-1;
             },
 
@@ -254,13 +284,24 @@
                 if (this.editedIndex > -1) {
                     //Código para editar
                     let me=this;
-                    axios.put('api/Sintomas/Actualizar',{
-                        'idsintoma':me.id,
-                        'idenfermedad':me.idenfermedad,
-                        'codigo':me.codigo,
+                    if(me.password!=me.passwordAnt)
+                    {
+                        me.actPassword=true;    
+                    }
+                        
+
+
+                    axios.put('api/Usuarios/Actualizar',{
+                        'idusuario':me.id,
+                        'idrol':me.idrol,
                         'nombre':me.nombre,
-                        'valor':me.valor,
-                        'descripcion':me.descripcion
+                        'tipo_documento':me.tipo_documento,
+                        'num_documento':me.num_documento,
+                        'direccion':me.direccion,
+                        'telefono':me.telefono,
+                        'email' : me.email,
+                        'password' : me.password,
+                        'act_password':me.actPassword,
 
                     },configuracion).then(function(response)  {
                         me.close();
@@ -273,13 +314,16 @@
                 } else {
                     //Código para guardar
                     let me=this;
-                    axios.post('api/Sintomas/Crear',{
+                    axios.post('api/Usuarios/Crear',{
                         
-                        'idenfermedad':me.idenfermedad,
-                        'codigo':me.codigo,
+                        'idrol':me.idrol,
                         'nombre':me.nombre,
-                        'valor':me.valor,
-                        'descripcion':me.descripcion
+                        'tipo_documento':me.tipo_documento,
+                        'num_documento':me.num_documento,
+                        'direccion':me.direccion,
+                        'telefono':me.telefono,
+                        'email' : me.email,
+                        'password' : me.password,
 
                     },configuracion).then(function(response)  {
                         me.close();
@@ -297,17 +341,24 @@
                 this.valida=0;
                 this.validaMensaje=[];
 
-                if(this.nombre.length<3 || this.nombre.length>50)    {
-                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres.");
+                if(this.nombre.length<3 || this.nombre.length>100)    {
+                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 100 caracteres.");
 
                 }
                
-                if(!this.idenfermedad){
-                    this.validaMensaje.push("Selecciona una enfermedad.");
+                if(!this.idrol){
+                    this.validaMensaje.push("Selecciona un rol.");
                 }
-                if(!this.valor || this.valor==0){
-                    this.validaMensaje.push("Ingrese el valor del síntoma.");
+                if(!this.tipo_documento){
+                    this.validaMensaje.push("Selecciona una tipo de documento.");
                 }
+                if(!this.email){
+                    this.validaMensaje.push("Ingrese un email del usuario.");
+                }
+                if(!this.password){
+                    this.validaMensaje.push("Ingrese el password del usuario.");
+                }
+
                 if(this.validaMensaje.length)   {
                     this.valida=1;
                 }
@@ -316,7 +367,7 @@
             activarDesactivarMostrar(accion,item)  {
                 this.adModal=1;
                 this.adNombre=item.nombre;
-                this.adId=item.idsintoma;
+                this.adId=item.idusuario;
 
                 if(accion==1)   {
                     this.adAccion=1;
@@ -334,7 +385,7 @@
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                axios.put('api/Sintomas/Activar/'+this.adId,{},configuracion).then(function(response)  {
+                axios.put('api/Usuarios/Activar/'+this.adId,{},configuracion).then(function(response)  {
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre='';
@@ -349,7 +400,7 @@
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                axios.put('api/Sintomas/Desactivar/'+this.adId,{},configuracion).then(function(response)  {
+                axios.put('api/Usuarios/Desactivar/'+this.adId,{},configuracion).then(function(response)  {
                     me.adModal=0;
                     me.adAccion=0;
                     me.adNombre='';

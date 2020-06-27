@@ -2,7 +2,7 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Enfermedades</v-toolbar-title>
+                <v-toolbar-title>Enfermeras</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
@@ -22,11 +22,28 @@
                                 <v-container grid-list-md>
                                     <v-layout wrap>
                                     <v-flex xs12 sm12 md12>
-                                        <v-text-field v-model="nombre" label="Nombre"></v-text-field>
+                                        <v-text-field v-model="nombre" label="Nombre">
+                                        </v-text-field>
+                                    </v-flex>   
+                                    
+                                    <v-flex xs12 sm6 md6>
+                                         <v-select v-model="tipo_documento"
+                                        :items="documentos" label="Tipo Documento">
+                                        </v-select> 
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="num_documento" label="Número Documento"></v-text-field>
                                     </v-flex>
                                     <v-flex xs12 sm12 md12>
-                                        <v-text-field v-model="descripcion" label="Descripcion"></v-text-field>
+                                        <v-text-field v-model="direccion" label="Direccion"></v-text-field>
                                     </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="telefono" label="Telefono"></v-text-field>
+                                    </v-flex>
+                                    <v-flex xs12 sm6 md6>
+                                        <v-text-field v-model="email" label="Email"></v-text-field>
+                                    </v-flex>
+                                   
                                     <v-flex xs12 sm12 md12 v-show="valida">
                                         <div class="red--text" v-for="v in validaMensaje" :key="v" v-text="v">
                                         </div>
@@ -43,35 +60,11 @@
                                 </v-card-actions>
                             </v-card>
                     </v-dialog>
-                    <v-dialog v-model="adModal" max-width="290">
-                        <v-card>
-                            <v-card-title class="headline" v-if="adAccion==1">¿Activar Item?</v-card-title>
-                            <v-card-title class="headline" v-if="adAccion==2">¿Desactivar Item?</v-card-title>
-                            <v-card-text>
-                                Estas a  punto de 
-                                <span v-if="adAccion==1">Activar</span>
-                                <span v-if="adAccion==2">Desactivar</span>
-                                el ítem  {{adNombre}}
-                            </v-card-text>
-                        
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="green darken-1" flat="flat" @click="activarDesactivarCerrar">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn v-if="adAccion==1" color="orange darken-4" flat="flat" @click="activar">
-                                    Activar
-                                </v-btn>
-                                <v-btn v-if="adAccion==2" color="orange darken-4" flat="flat" @click="desactivar">
-                                    Desactivar
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+                    
                 </v-toolbar>
             <v-data-table
                 :headers="headers"
-                :items="enfermedades"
+                :items="enfermeras"
                 :search="search"
                 class="elevation-1"
             >
@@ -84,34 +77,16 @@
                         >
                         edit
                         </v-icon>
-                        <template v-if="props.item.condicion">
-                            <v-icon
-                            small
-                            @click="activarDesactivarMostrar(2,props.item)"
-                            >
-                            block
-                            </v-icon>
-                        </template>
-                        <template v-else>
-                            <v-icon
-                            small
-                            @click="activarDesactivarMostrar(1,props.item)"
-                            >
-                            check
-                            </v-icon>
-                        </template>
+                        
                     </td>
                     <td>{{ props.item.nombre }}</td>
-                    <td>{{ props.item.descripcion }}</td>
-                    <td>
-                        <div v-if="props.item.condicion">
-                            <span class="blue--text">Activo</span>
-                        </div>
-                        <div v-else>
-                            <span class="red--text">Inactivo</span>
-                        </div>
-                    </td>
-               
+                    <td>{{ props.item.tipo_persona }}</td>
+                    <td>{{ props.item.tipo_documento }}</td>
+                    <td>{{ props.item.num_documento }}</td>
+                    <td>{{ props.item.direccion }}</td>
+                    <td>{{ props.item.telefono }}</td>
+                    <td>{{ props.item.email }}</td>
+                    
                
                 </template>
                 <template slot="no-data">
@@ -126,22 +101,33 @@
     export default {
         data(){
             return {
-                enfermedades: [],
+                enfermeras: [],
                 dialog: false,
                 headers: [
                 
                     { text: 'Opciones', value: 'opciones', sortable: false }, 
                     { text: 'Nombre', value: 'nombre' },
-                    { text: 'Descripcion', value: 'descripcion', sortable: false },
+                    { text: 'Tipo Persona', value: 'tipo_persona' },
+                    { text: 'Tipo Documento', value: 'tipo_documento'},
+                    { text: 'Número Documento', value: 'num_documento', sortable: false },
+                    { text: 'Dirección', value: 'direccion', sortable: false },
+                    { text: 'Teléfono', value: 'telefono', sortable: false },
+                    { text: 'Email', value: 'email', sortable: false },
                     { text: 'Estado', value: 'condicion', sortable: false },
                 
                 ],
                 search: '',
                 editedIndex: -1,
-                
                 id:'',
+                
                 nombre:'',
-                descripcion:'',
+                tipo_documento:'',
+                documentos: ['DNI','RUC','PASAPORTE','CEDULA'],
+                num_documento:'',
+                direccion:'',
+                telefono:'',
+                email:'',
+                
                 valida: 0,
                 validaMensaje:[],
                 adModal:0,
@@ -153,7 +139,7 @@
         },
         computed: {
             formTitle () {
-            return this.editedIndex === -1 ? 'Nueva Enfermedad' : 'Actualizar enfermedad'
+            return this.editedIndex === -1 ? 'Nueva Enfermera' : 'Actualizar Enfermera'
             }
         },
 
@@ -165,34 +151,39 @@
 
         created () {
             this.listar();
+            
+            
         },
         methods:{
 
-            listar ()   {
+            listar()   {
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                 axios.get('api/Enfermedades/Listar',configuracion).then(function(response)  {
+                 axios.get('api/Personas/ListarEnfermeras',configuracion).then(function(response)  {
                        //console.log(response);
-                       me.enfermedades=response.data;
+                       me.enfermeras=response.data;
                  }).catch(function(error)   {
                        console.log(error);
                  });
             },
+            
 
             editItem (item) {
-                this.id=item.idenfermedad;
+                this.id=item.idpersona;
+                this.idrol=item.idrol;
                 this.nombre=item.nombre;
-                this.descripcion=item.descripcion;
+                this.tipo_documento=item.tipo_documento;
+                this.num_documento=item.num_documento;
+                this.direccion=item.direccion;
+                this.telefono=item.telefono;
+                this.email=item.email;
+                
                 this.editedIndex=1;
                 this.dialog = true
             },
 
-            deleteItem (item) {
-                const index = this.desserts.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-            },
-
+         
             close () {
                 this.dialog = false;
                 this.limpiar();
@@ -200,8 +191,14 @@
 
             limpiar()   {
                 this.id="";
+                
                 this.nombre="";
-                this.descripcion="";
+                this.tipo_documento="";
+                this.num_documento="";
+                this.direccion="";
+                this.telefono="";
+                this.email="";
+                
                 this.editedIndex=-1;
             },
 
@@ -214,10 +211,18 @@
                 if (this.editedIndex > -1) {
                     //Código para editar
                     let me=this;
-                    axios.put('api/Enfermedades/Actualizar',{
-                        'idenfermedad':me.id,
+                    
+
+                    axios.put('api/Personas/Actualizar',{
+                        'idpersona':me.id,
+                        'tipo_persona':'Enfermera',
                         'nombre':me.nombre,
-                        'descripcion':me.descripcion
+                        'tipo_documento':me.tipo_documento,
+                        'num_documento':me.num_documento,
+                        'direccion':me.direccion,
+                        'telefono':me.telefono,
+                        'email' : me.email,
+                        
 
                     },configuracion).then(function(response)  {
                         me.close();
@@ -230,9 +235,16 @@
                 } else {
                     //Código para guardar
                     let me=this;
-                    axios.post('api/Enfermedades/Crear',{
+                    axios.post('api/Personas/Crear',{
+                        
+                        'tipo_persona':'Enfermera',
                         'nombre':me.nombre,
-                        'descripcion':me.descripcion
+                        'tipo_documento':me.tipo_documento,
+                        'num_documento':me.num_documento,
+                        'direccion':me.direccion,
+                        'telefono':me.telefono,
+                        'email' : me.email,
+                        
 
                     },configuracion).then(function(response)  {
                         me.close();
@@ -250,62 +262,24 @@
                 this.valida=0;
                 this.validaMensaje=[];
 
-                if(this.nombre.length<3 || this.nombre.length>50)    {
-                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 50 caracteres");
+                if(this.nombre.length<3 || this.nombre.length>100)    {
+                    this.validaMensaje.push("El nombre debe tener más de 3 caracteres y menos de 100 caracteres.");
 
                 }
+               
+                
+                if(!this.tipo_documento){
+                    this.validaMensaje.push("Selecciona una tipo de documento.");
+                }
+                
+                
+
                 if(this.validaMensaje.length)   {
                     this.valida=1;
                 }
                 return this.valida;
             },
-            activarDesactivarMostrar(accion,item)  {
-                this.adModal=1;
-                this.adNombre=item.nombre;
-                this.adId=item.idenfermedad;
-
-                if(accion==1)   {
-                    this.adAccion=1;
-                }else if(accion==2) {
-                    this.adAccion=2;
-                }
-                else{
-                    this.adAccion=0;
-                }
-            },
-            activarDesactivarCerrar()   {
-                this.adModal=0;
-            },
-            activar()   {
-                let me=this;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                axios.put('api/Enfermedades/Activar/'+this.adId,{},configuracion).then(function(response)  {
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre='';
-                    me.adId='';
-                    me.listar();
-                }).catch(function(error)   {
-                    console.log(error)
-                });
-
-            },
-            desactivar()    {
-                let me=this;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                axios.put('api/Enfermedades/Desactivar/'+this.adId,{},configuracion).then(function(response)  {
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre='';
-                    me.adId='';
-                    me.listar();
-                }).catch(function(error)   {
-                    console.log(error)
-                });
-
-            }
+           
         }        
     }
 </script>
