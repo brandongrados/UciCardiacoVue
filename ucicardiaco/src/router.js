@@ -8,6 +8,7 @@ import Usuario from './components/Usuario.vue'
 import Paciente from './components/Paciente.vue'
 import Enfermera from './components/Enfermera.vue'
 import Login from './components/Login.vue'
+import Historia from './components/Historia.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -46,6 +47,18 @@ var router = new Router({
       meta: {
         administrador:true,
         medico:true,
+       
+      }
+    },
+
+   {
+      path: '/historias',
+      name: 'historias',
+      component: Historia,
+      meta: {
+        administrador:true,
+        medico:true,
+        secretaria:true,
        
       }
     },
