@@ -147,27 +147,27 @@
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Consulta
+                  Consultas
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'consultadiagnosticos'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Reportes Individuales(PREMIUM)
+                  Consultas Diagnosticos(PREMIUM)
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile :to="{ name: ''}">
+            <v-list-tile :to="{ name: 'consultahistorias'}">
               <v-list-tile-action>
                 <v-icon>table_chart</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title>
-                  Reportes Generales(PREMIUM)
+                  Consultas Historias (PREMIUM)
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>

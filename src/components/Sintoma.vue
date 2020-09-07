@@ -2,6 +2,7 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
+                <v-btn @click="crearPDF"><v-icon>print</v-icon></v-btn>
                 <v-toolbar-title>Sintomas</v-toolbar-title>
                     <v-divider
                     class="mx-2"
@@ -138,6 +139,8 @@
 </template>
 <script>
     import axios from 'axios'
+    import jsPDF from 'jspdf'
+    import autoTable from 'jspdf-autotable';
     export default {
         data(){
             return {
@@ -191,6 +194,30 @@
             
         },
         methods:{
+
+            crearPDF()  {
+                var columns = [
+                    {title: "Nombre", dataKey: "nombre"},
+                    {title: "Codigo", dataKey: "codigo"},
+                    {title: "Enfermedad", dataKey: "enfermedad"},
+                    {title: "Valor", dataKey: "valor"}
+                ];   
+
+                var rows = []; 
+
+                this.sintomas.map(function(x)   {
+                    rows.push({nombre:x.nombre,codigo:x.codigo,enfermedad:x.enfermedad,valor:x.valor});
+                });
+
+                var doc = new jsPDF('p','pt');
+                doc.autoTable(columns, rows,     {
+                    margin: {top:60},
+                    addPageContent: function(data)  {
+                        doc.text("Listado de Sintomas",40,30);
+                    }
+                });
+                doc.save('Sintomas.pdf');
+            },
 
             listar()   {
                 let me=this;

@@ -3,95 +3,21 @@
     <v-layout align-start>
         <v-flex>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Diagnosticos</v-toolbar-title>
+                <v-toolbar-title>Consulta Historias</v-toolbar-title>
                     <v-divider
                     class="mx-2"
                     inset
                     vertical
                     ></v-divider>
                     <v-spacer></v-spacer>
-                    <v-text-field v-if="verNuevo==0" class="text-xs-center" v-model="search" append-icon="search" label="Búsqueda" single-line hide-details></v-text-field>
+                    Desde:&nbsp;
+                    <v-text-field type="date" v-if="verNuevo==0" 
+                    class="text-xs-center" v-model="fechaInicio" ></v-text-field>
+                    Hasta:&nbsp;
+                    <v-text-field type="date" v-if="verNuevo==0" 
+                    class="text-xs-center" v-model="fechaFin" ></v-text-field>
                     <v-btn v-if="verNuevo==0" @click="listar()" color="primary" dark class="mb-2">Buscar</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn v-if="verNuevo==0" @click="mostrarNuevo" color="primary" dark class="mb-2">Nuevo</v-btn>
-                    
-                    <v-dialog v-model="verSintomas" max-whidth="1000px">
-                        <v-card>
-                            <v-card-title>
-                                <span class = "headline">Seleccione un Síntoma</span>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container grid-list-md>
-                                    <v-layout wrap>
-                                        <v-flex xs12 sm12 lg12 xl12>
-                                            <v-text-field append-icon="search" 
-                                            class="text-xs-center" v-model="texto"
-                                            label="Ingrese síntoma buscar" @keyup.enter="listarSintoma()">
-                                            </v-text-field>
-                                            <template>
-                                                <v-data-table
-                                                    :headers="cabeceraSintomas"
-                                                    :items="sintomas"
-                                                    class="elevation-1"
-                                                >
-                                                    <template slot="items" slot-scope="props">
-                                                        <td class="justify-center layout px-0">
-                                                            <v-icon
-                                                            small
-                                                            class="mr-2"
-                                                            @click="agregarDetalle(props.item)"
-                                                            >
-                                                            add
-                                                            </v-icon>
-                                                        </td>
-                                                        <td>{{ props.item.nombre }}</td>
-                                                        <td>{{props.item.enfermedad}}</td>
-                                                        <td>{{props.item.descripcion}}</td>
-                                                        <td>{{props.item.valor}}</td>
-              
-                                                    </template>
-                                                    <template slot="no-data">
-                                                        <h3>No hay síntomas para mostrar</h3>
-                                                    </template>
-                                                </v-data-table>
-                                            </template>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn @click="ocultarSintomas()" color= "blue darken" flat>
-                                    Cancelar
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                    <v-dialog v-model="adModal" max-width="290">
-                        <v-card>
-                            <v-card-title class="headline" v-if="adAccion==1">¿Activar Item?</v-card-title>
-                            <v-card-title class="headline" v-if="adAccion==2">¿Anular Diagnostico?</v-card-title>
-                            <v-card-text>
-                                Estas a  punto de 
-                                <span v-if="adAccion==1">Activar </span>
-                                <span v-if="adAccion==2">Anular </span>
-                                el ítem  {{adNombre}}
-                            </v-card-text>
-                        
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="green darken-1" flat="flat" @click="activarDesactivarCerrar">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn v-if="adAccion==1" color="orange darken-4" flat="flat" @click="activar">
-                                    Activar
-                                </v-btn>
-                                <v-btn v-if="adAccion==2" color="orange darken-4" flat="flat" @click="desactivar">
-                                    Anular
-                                </v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
+            
                     <v-dialog v-model="inventarioModal" max-width="1100px">
                         <v-card>
                             <v-card-text>
@@ -107,8 +33,8 @@
                                             </p>
                                         </div>
                                         <div id="inv">
-                                            <p> {{tipo_diagnostico}}<br>
-                                            {{serie_diagnostico}}-{{num_diagnostico}}<br>
+                                            <p> {{tipo_historia}}<br>
+                                            {{serie_historia}}-{{num_historia}}<br>
                                             {{fecha_hora}}
                                             </p>
                                         </div>
@@ -116,11 +42,11 @@
                                     <br>
                                     <section>
                                         <div>
-                                            <table id="invpaciente">
+                                            <table id="invenfermera">
                                                 <tbody>
                                                     <tr>
-                                                        <td id="paciente">
-                                                            <strong>Sr(a). {{paciente}}</strong><br>
+                                                        <td id="enfermera">
+                                                            <strong>Sr(a). {{enfermera}}</strong><br>
                                                             <strong>Documento:</strong> {{num_documento}}  <br>
                                                             <strong>Dirección:</strong>{{direccion}}<br>
                                                             <strong>Teléfono:</strong> {{telefono}}<br>
@@ -144,7 +70,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="det in detalles" :key="det.iddetalle_diagnostico">
+                                                    <tr v-for="det in detalles" :key="det.iddetalle_historia">
                                                         
                                                         <td>{{det.sintoma}}</td>
                                                         <td style="text-align:right;">{{det.valor}}</td>
@@ -177,8 +103,8 @@
                 </v-toolbar>
             <v-data-table
                 :headers="headers"
-                :items="diagnosticos"
-                :search="search"
+                :items="historias"
+                
                 class="elevation-1"
                 v-if="verNuevo==0"
             >
@@ -198,21 +124,14 @@
                         >
                         print
                         </v-icon>
-                        <template v-if="props.item.estado=='Aceptado'">
-                            <v-icon
-                            small
-                            @click="activarDesactivarMostrar(2,props.item)"
-                            >
-                            block
-                            </v-icon>
-                        </template>
+                        
                         
                     </td>
                     <td>{{ props.item.usuario }}</td>
-                    <td>{{ props.item.paciente }}</td>
-                    <td>{{ props.item.tipo_diagnostico }}</td>
-                    <td>{{ props.item.serie_diagnostico }}</td>
-                    <td>{{ props.item.num_diagnostico }}</td>
+                    <td>{{ props.item.enfermera }}</td>
+                    <td>{{ props.item.tipo_historia }}</td>
+                    <td>{{ props.item.serie_historia }}</td>
+                    <td>{{ props.item.num_historia }}</td>
                     <td>{{ props.item.fecha_hora }}</td>
                     <td>{{ props.item.resultado}}</td>
                     <td>
@@ -232,21 +151,21 @@
             <v-container grid-list-sm class="pa-4 white" v-if="verNuevo">
                 <v-layout row wrap>
                     <v-flex xs12 sm4 ms4 lg4 xl4>
-                        <v-select v-model="tipo_diagnostico"
-                        :items="diagnosticales" label="Tipo Diagnostico">
+                        <v-select v-model="tipo_historia"
+                        :items="historiales" label="Tipo Historia">
                         </v-select>
                     </v-flex>
                     <v-flex xs12 sm4 ms4 lg4 xl4>
-                        <v-text-field v-model="serie_diagnostico" label="Serie Diagnostico">
+                        <v-text-field v-model="serie_historia" label="Serie Historia">
                         </v-text-field>
                     </v-flex>
                     <v-flex xs12 sm4 ms4 lg4 xl4>
-                        <v-text-field v-model="num_diagnostico" label="Número Diagnostico">
+                        <v-text-field v-model="num_historia" label="Número Historia">
                         </v-text-field>
                     </v-flex>
                     <v-flex xs12 sm8 ms8 lg8 xl8>
-                        <v-select v-model="idpaciente"
-                        :items="pacientes" label="Paciente">
+                        <v-select v-model="idenfermera"
+                        :items="enfermeras" label="Enfermera">
                         </v-select>
                     </v-flex>
                     
@@ -273,15 +192,7 @@
                             class="elevation-1"
                         >
                             <template slot="items" slot-scope="props">
-                                <td class="justify-center layout px-0">
-                                    <v-icon
-                                    small
-                                    class="mr-2"
-                                    @click="eliminarDetalle(detalles,props.item)"
-                                    >
-                                    delete
-                                    </v-icon>
-                               </td>
+                               
                                 <td>{{ props.item.sintoma }}</td>
                                 
                                 <td><v-text-field type="number" v-model="props.item.valor"></v-text-field> </td>
@@ -319,16 +230,16 @@
     export default {
         data(){
             return {
-                diagnosticos: [],
+                historias: [],
                 dialog: false,
                 headers: [
                 
                     { text: 'Opciones', value: 'opciones', sortable: false }, 
                     { text: 'Usuario', value: 'usuario' },
-                    { text: 'Paciente', value: 'paciente' },
-                    { text: 'Tipo Diagnostico', value: 'tipo_diagnostico'},
-                    { text: 'Serie Diagnostico', value: 'serie_diagnostico', sortable: false },
-                    { text: 'Número Diagnostico', value: 'num_diagnostico', sortable: false },
+                    { text: 'Enfermera', value: 'enfermera' },
+                    { text: 'Tipo Historia', value: 'tipo_historia'},
+                    { text: 'Serie Historia', value: 'serie_historia', sortable: false },
+                    { text: 'Número Historia', value: 'num_historia', sortable: false },
                     { text: 'Fecha', value: 'fecha_hora', sortable: false },
                     { text: 'Resultado', value: 'resultado', sortable: false },
                     { text: 'Estado', value: 'estado', sortable: false }
@@ -336,7 +247,7 @@
                 ],
                 cabeceraDetalles: [
                 
-                    { text: 'Borrar', value: 'borrar', sortable: false }, 
+                    
                     { text: 'Sintoma', value: 'sintoma', sortable: false }, 
                     { text: 'valor', value: 'valor', sortable: false }
                     
@@ -346,13 +257,13 @@
                 ],
                 search: '',
                 id:'',
-                idpaciente:'',
-                pacientes:[  
+                idenfermera:'',
+                enfermeras:[  
                 ],
-                tipo_diagnostico:'',
-                diagnosticales: ['UCI','TRIAGE'],
-                serie_diagnostico:'',
-                num_diagnostico:'',
+                tipo_historia:'',
+                historiales: ['UCI','TRIAGE'],
+                serie_historia:'',
+                num_historia:'',
                 codigo:'', 
                 verNuevo:0,
                 errorSintoma:null, 
@@ -377,12 +288,14 @@
                 adNombre:'',
                 adId:'',
                 inventarioModal:0,
-                paciente:'',
+                enfermera:'',
                 fecha_hora:'',
                 num_documento:'',
                 direccion:'',
                 telefono:'',
-                email:''
+                email:'',
+                fechaInicio:'',
+                fechaFin:''
               
             }
         },
@@ -526,6 +439,11 @@
         },
         methods:{
 
+            mostrarSintomas()   {
+                this.verSintomas=1;
+            },
+
+
             crearPDF()  {
                 var quotes = document.getElementById('inventario');
                 html2canvas(quotes).then(function(canvas) {
@@ -538,23 +456,23 @@
                 var position = 0;
 
                 doc.addImage(imgData, 'PNG',0,position,imgWidth,imgHeight);
-                doc.save('InventarioDiagnostico.pdf');
+                doc.save('InventarioHistoria.pdf');
 
                 });
             },
 
             mostrarInventario(item) {
                 this.limpiar();
-                this.tipo_diagnostico=item.tipo_diagnostico;
-                this.serie_diagnostico=item.serie_diagnostico;
-                this.num_diagnostico=item.num_diagnostico;
-                this.paciente=item.paciente;
+                this.tipo_historia=item.tipo_historia;
+                this.serie_historia=item.serie_historia;
+                this.num_historia=item.num_historia;
+                this.enfermera=item.enfermera;
                 this.num_documento=item.num_documento;
                 this.direccion=item.direccion;
                 this.telefono=item.telefono;
                 this.email=item.email;
                 this.fecha_hora=item.fecha_hora;
-                this.listarDetalles(item.id_diagnostico);
+                this.listarDetalles(item.idhistoria);
                 this.inventarioModal=1;
             },
             ocultarInventario() {
@@ -569,41 +487,7 @@
                 this.verNuevo=0;
                 this.limpiar();
             },
-            buscarCodigo()   {
-                let me=this;
-                me.errorSintoma=null;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                 axios.get('api/Sintomas/BuscarCodigoDiagnostico/'+this.codigo,configuracion)
-                 .then(function(response)  {
-                       //console.log(response);
-                       me.agregarDetalle(response.data);
-                 }).catch(function(error)   {
-                       console.log(error);
-                       me.errorSintoma='No existe el sintoma';
-                 });
-            },
-
-            listarSintoma() {
-                let me=this;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                 axios.get('api/Sintomas/ListarDiagnostico/'+me.texto,configuracion).then(function(response)  {
-                       //console.log(response);
-                       me.sintomas=response.data;
-                 }).catch(function(error)   {
-                       console.log(error);
-                 });
-            },
-
-            mostrarSintomas()   {
-                this.verSintomas=1;
-            },
-
-            ocultarSintomas()   {
-                this.verSintomas=0;
-            },
-
+   
             agregarDetalle(data = [])    {
                 this.errorSintoma=null;
                 if(this.encuentra(data['idsintoma']))    {
@@ -632,27 +516,22 @@
                 }
                 return sw;
             },
-            eliminarDetalle(arr,item)   {
-                var i = arr.indexOf(item);
-                if(i!==-1)  {
-                    arr.splice(i,1);
-                }
-            },
+            
 
             listar()   {
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
                 let url='';
-                if(!me.search)    {
-                    url='api/Diagnosticos/Listar';
+                if(!me.fechaInicio || !me.fechaFin )    {
+                    url='api/Historias/Listar';
                 }
                 else{
-                    url='api/Diagnosticos/ListarFiltro/'+me.search;
+                    url='api/Historias/ConsultaFechas/'+me.fechaInicio+'/'+me.fechaFin;
                 }
                  axios.get(url,configuracion).then(function(response)  {
                        //console.log(response);
-                       me.diagnosticos=response.data;
+                       me.historias=response.data;
                  }).catch(function(error)   {
                        console.log(error);
                  });
@@ -662,7 +541,7 @@
                 let me=this;
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
-                 axios.get('api/Diagnosticos/ListarDetalles/'+id,configuracion).then(function(response)  {
+                 axios.get('api/Historias/ListarDetalles/'+id,configuracion).then(function(response)  {
                        //console.log(response);
                        me.detalles=response.data;
                  }).catch(function(error)   {
@@ -672,28 +551,26 @@
 
             verDetalles(item)   {
                 this.limpiar();
-                this.tipo_diagnostico=item.tipo_diagnostico;
-                this.serie_diagnostico=item.serie_diagnostico;
-                this.num_diagnostico=item.num_diagnostico;
-                this.idpaciente=item.idpaciente;
-                this.listarDetalles(item.id_diagnostico);
+                this.tipo_historia=item.tipo_historia;
+                this.serie_historia=item.serie_historia;
+                this.num_historia=item.num_historia;
+                this.idenfermera=item.idenfermera;
+                this.listarDetalles(item.idhistoria);
                 this.verNuevo=1;
                 this.verDet=1;
             },
 
 
-
-
             select()   {
                 let me=this;
-                var pacientesArray=[];
+                var enfermerasArray=[];
                 let header= {"Authorization": "Bearer " + this.$store.state.token};
                 let configuracion=  {headers : header};
                 
-                 axios.get('api/Personas/SelectPacientes',configuracion).then(function(response)  {
-                       pacientesArray=response.data;
-                       pacientesArray.map(function(x)    {
-                           me.pacientes.push({text:x.nombre,value:x.idpersona});
+                 axios.get('api/Personas/SelectEnfermera',configuracion).then(function(response)  {
+                       enfermerasArray=response.data;
+                       enfermerasArray.map(function(x)    {
+                           me.enfermeras.push({text:x.nombre,value:x.idpersona});
                        });
                  }).catch(function(error)   {
                        console.log(error);
@@ -702,121 +579,16 @@
  
             limpiar()   {
                 this.id="";
-                this.idpaciente="";
-                this.tipo_diagnostico="";
-                this.serie_diagnostico="";
-                this.num_diagnostico="";
+                this.idenfermera="";
+                this.tipo_historia="";
+                this.serie_historia="";
+                this.num_historia="";
                 this.codigo="";
                 this.detalles=[];
                 this.resultado=0;
                 this.verDet=0;
                 
                 
-            },
-
-            guardar () {
-                if(this.validar())    {
-                    return;
-                }
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};              
-                let me=this;
-                axios.post('api/Diagnosticos/Crear',{
-                    
-                    'idpaciente':me.idpaciente,
-                    'idusuario':me.$store.state.usuario.idusuario,
-                    'tipo_diagnostico':me.tipo_diagnostico,
-                    'serie_diagnostico':me.serie_diagnostico,
-                    'num_diagnostico':me.num_diagnostico,
-                    'resultado':me.resultado,
-                    'detalles' : me.detalles
-
-                },configuracion).then(function(response)  {
-                    me.ocultarNuevo();
-                    me.listar();
-                    me.limpiar();
-                }).catch(function(error)   {
-                    console.log(error)
-                });
-
-            },
-
-            validar()   {
-                this.valida=0;
-                this.validaMensaje=[];
-
-              
-                if(!this.idpaciente){
-                    this.validaMensaje.push("Selecciona un paciente.");
-                }
-                if(!this.tipo_diagnostico){
-                    this.validaMensaje.push("Selecciona una tipo de diagnostico.");
-                }
-                if(!this.num_diagnostico){
-                    this.validaMensaje.push("Ingrese un numero de diagnostico.");
-                }
-
-                if(this.detalles.length<=0){
-                    this.validaMensaje.push("Ingrese al menos un sintoma a detalle.");
-
-                }
-
-                if(this.validaMensaje.length)   {
-                    this.valida=1;
-                }
-                return this.valida;
-            },
-            activarDesactivarMostrar(accion,item)  {
-                this.adModal=1;
-                this.adNombre=item.num_diagnostico;
-                this.adId=item.id_diagnostico;
-
-                if(accion==1)   {
-                    this.adAccion=1;
-                }
-                else if(accion==2) {
-                    this.adAccion=2;
-                }
-                else{
-                    this.adModal=0;
-                }
-            },
-            activarDesactivarCerrar()   {
-                this.adModal=0;
-            },
-
-            /*
-            activar()   {
-                let me=this;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                axios.put('api/Usuarios/Activar/'+this.adId,{},configuracion).then(function(response)  {
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre='';
-                    me.adId='';
-                    me.listar();
-                }).catch(function(error)   {
-                    console.log(error)
-                });
-
-            },
-            */
-
-            desactivar()    {
-                let me=this;
-                let header= {"Authorization": "Bearer " + this.$store.state.token};
-                let configuracion=  {headers : header};
-                axios.put('api/Diagnosticos/Anular/'+this.adId,{},configuracion).then(function(response)  {
-                    me.adModal=0;
-                    me.adAccion=0;
-                    me.adNombre="";
-                    me.adId="";
-                    me.listar();
-                }).catch(function(error)   {
-                    console.log(error);
-                });
-
             }
         }        
     }
@@ -864,11 +636,11 @@
         clear: left;
     }
 
-    #paciente {
+    #enfermera {
         text-align: left;
     }
 
-    #invpaciente {
+    #invenfermera {
         width: 40%;
         border-collapse: collapse;
         border-spacing: 0;

@@ -14,6 +14,8 @@ import Portada from './components/Portada.vue'
 import ProductosNuestros from './components/ProductosNuestros.vue'
 import ReporteIndividual from './components/ReporteIndividual.vue'
 import ReporteGeneral from './components/ReporteGeneral.vue'
+import ConsultaDiagnostico from './components/ConsultaDiagnostico.vue'
+import ConsultaHistoria from './components/ConsultaHistoria.vue'
 import store from './store'
 
 Vue.use(Router)
@@ -90,6 +92,18 @@ var router = new Router({
     },
 
     {
+      path: '/consultahistorias',
+      name: 'consultahistorias',
+      component: ConsultaHistoria,
+      meta: {
+        administrador:true,
+        medico:true,
+        secretaria:true
+        
+      }
+    },
+
+    {
       path: '/roles',
       name: 'roles',
       component: Rol,
@@ -123,6 +137,18 @@ var router = new Router({
       path: '/diagnosticos',
       name: 'diagnosticos',
       component: Diagnostico,
+      meta: {
+        administrador:true,
+        medico:true,
+        secretaria:true
+        
+      }
+    },
+
+    {
+      path: '/consultadiagnosticos',
+      name: 'consultadiagnosticos',
+      component: ConsultaDiagnostico,
       meta: {
         administrador:true,
         medico:true,
